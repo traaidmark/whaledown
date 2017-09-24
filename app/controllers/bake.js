@@ -9,8 +9,6 @@ const ffs = require('final-fs')
 
 const cfg = require('../config')
 
-const cacheDir = `./${cfg.server.cache}`
-
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // 2. SERVER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -19,13 +17,14 @@ const bake = async (req, res) => {
 
   // 2.1. DELETE & RECREATE CACHE DIR ..........................................
 
-  if ( await ffs.exists(cacheDir) ) {
+  if ( await ffs.exists(cfg.server.cache) ) {
   
-   await ffs.rmdir(cacheDir)
+   await ffs.rmdir(cfg.server.cache)
+   await ffs.mkdirRecursive(cfg.server.cache)
 
+  } else {
+    await ffs.mkdirRecursive(cfg.server.cache)
   }
-
-  await ffs.mkdirRecursive(`./${cfg.server.cache}`)
   
   // 2.1. END ..................................................................
 

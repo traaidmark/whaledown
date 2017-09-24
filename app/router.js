@@ -23,7 +23,7 @@ let data
 /*
 ROUTE: /api
 RETURNS: CONFIG OBJECT
-DESCRIPTION: Returns the config object set in app.yml
+DESCRIPTION: Returns server status
 */
 
 router.get( '/', (req, res) => res.status(200).send(cfg) )
@@ -38,7 +38,7 @@ RETURNS: CONFIG OBJECT
 DESCRIPTION: Runs the 
 */
 
-//router.get( '/bake', (req, res) => bake(req, res) )
+router.get( '/bake', (req, res) => bakeController(req, res))
 
 // 2.2. END ....................................................................
 
