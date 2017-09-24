@@ -1,9 +1,11 @@
-port: 4000
-app: https://traaidmark.com
-type:
-  - name: "page",
-    location: "pages",
+server:
+  port: 4000
+  cache: 'cache'
+  assets: 'static'
+content_types:
+  - name: "page"
+    location: "pages"
     collection: false
-  - name: "blog",
-    location: "articles",
+  - name: "blog"
+    location: "articles"
     collection: true

@@ -4,11 +4,15 @@
 
 // 1. DEPENDENCIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-const config = require('yaml-config');
-const settings = config.readConfig('../app.yml')
+const yaml = require('js-yaml')
+const fs = require('fs')
+const e = yaml.load(fs.readFileSync('./app.yml'))
+
+console.log(e)
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+console.log(process.env.NODE_ENV)
 
-module.exports = settings
+module.exports = e
 
 // END OF FILE #################################################################
