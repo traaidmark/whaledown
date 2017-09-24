@@ -5,12 +5,11 @@
 // 1. DEPENDENCIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const express = require('express')
-const ffs = require('final-fs')
-
 
 const cfg = require('./config')
-const bake = require('./bake.js')
-const list = require('./listings.js')
+
+const bakeController = require('./controllers/bake.js')
+const listController = require('./controllers/listings.js')
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -24,7 +23,7 @@ let data
 /*
 ROUTE: /api
 RETURNS: CONFIG OBJECT
-DESCRIPTION: Returns the config object set in config.json
+DESCRIPTION: Returns the config object set in app.yml
 */
 
 router.get( '/', (req, res) => res.status(200).send(cfg) )
@@ -39,17 +38,17 @@ RETURNS: CONFIG OBJECT
 DESCRIPTION: Runs the 
 */
 
-router.get( '/bake', (req, res) => res.status(200).send( bake() ) )
+//router.get( '/bake', (req, res) => bake(req, res) )
 
 // 2.2. END ....................................................................
 
 // 2.3. CONTENT ................................................................
-
+/*
 // 2.3.1. LISTINGS
 
 router.get( '/listings/:type', async (req, res) => {
 
-  if ( await ffs.exists('./build') ) {
+  if ( await ffs.exists(`./${cfg.server.cache}`) ) {
     
     data = list(req.params.type)
     res.status(data.code).send({status: data.status, data: data.body})
@@ -67,7 +66,7 @@ router.get( '/listings/:type', async (req, res) => {
 
 router.get( '/content/:type/:slug', async (req, res) => {
 
-  if ( await ffs.exists('./build') ) {
+  if ( await ffs.exists(`./${cfg.server.cache}`) ) {
     
     data = list(req.params.type)
     res.status(data.code).send({status: data.status, data: data.body})
@@ -79,7 +78,7 @@ router.get( '/content/:type/:slug', async (req, res) => {
   }
 
 } )
-
+*/
 // 2.3. END ....................................................................
 
 // 2. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

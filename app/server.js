@@ -5,7 +5,10 @@
 // 1. DEPENDENCIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const express = require('express')
-const api = require('./app')
+
+const cfg = require('./config')
+const api = require('./router')
+
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -22,7 +25,7 @@ const app = express()
 // 2.2. ROUTES .................................................................
 
 app.get('/', function (req, res) {
-  res.redirect('https://traaidmark.com')
+  res.redirect(cfg.server.app)
 })
 
 app.use('/api', api)
@@ -31,8 +34,8 @@ app.use('/api', api)
 
 // 2.3. LISTENING ..............................................................
 
-app.listen(4000, () => {
-  console.log('Whaledown is running at 4000');
+app.listen(cfg.server.port, () => {
+  console.log(`Whaledown is running at ${cfg.server.port}`);
 });
 
 // 2.3. END ....................................................................

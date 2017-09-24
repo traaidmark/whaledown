@@ -1,11 +1,12 @@
+frontend: https://wwww.traaidmark.com
 server:
   port: 4000
-  cache: 'cache'
-  assets: 'static'
+  content: '../'
+  assets: '/public'
 content_types:
   - name: "page"
-    location: "pages"
+    location: "/content/pages"
     collection: false
   - name: "blog"
-    location: "articles"
+    location: "/content/articles"
     collection: true

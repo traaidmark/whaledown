@@ -6,7 +6,7 @@
 
 const yaml = require('js-yaml')
 const fs = require('fs')
-const e = yaml.load(fs.readFileSync('./app.yml'))
+const e = yaml.load(fs.readFileSync('../app.yml'))
 
 console.log(e)
 

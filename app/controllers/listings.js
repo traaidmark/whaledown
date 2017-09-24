@@ -6,18 +6,28 @@
 
 const express = require('express')
 
-const cfg = require('./config')
+const cfg = require('../config')
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // 2. SERVER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-const bake = () => {
-  return { status: 'alles is okay'}
+const list = (TYPE) => {
+
+  const listing = cfg.type.filter( type => type.name === TYPE)
+
+  if (listing.length === 0) {
+    return { code: 404, status: 'error', body: 'Content type not found.'}
+  } else {
+    return { code: 200, status: 'success', body: listing }
+  }
+
+  return listing
+  
 }
 
 // 2. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-module.exports = bake
+module.exports = list
 
 // END OF FILE #################################################################
