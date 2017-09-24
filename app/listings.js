@@ -6,7 +6,7 @@
 
 const express = require('express')
 
-const cfg = require('../config')
+const cfg = require('./config')
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

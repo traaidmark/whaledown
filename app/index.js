@@ -8,7 +8,7 @@ const express = require('express')
 const ffs = require('final-fs')
 
 
-const cfg = require('../config')
+const cfg = require('./config')
 const bake = require('./bake.js')
 const list = require('./listings.js')
 

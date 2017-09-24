@@ -4,20 +4,11 @@
 
 // 1. DEPENDENCIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-const express = require('express')
-
-const cfg = require('./config')
+const config = require('yaml-config');
+const settings = config.readConfig('../app.yml')
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// 2. SERVER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-const bake = () => {
-  return { status: 'alles is okay'}
-}
-
-// 2. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-module.exports = bake
+module.exports = settings
 
 // END OF FILE #################################################################
