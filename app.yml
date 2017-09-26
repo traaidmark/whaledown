@@ -1,15 +1,18 @@
 content_types:
-  - name: "page"
+  - name: "pages"
     collection: false
-  - name: "blog"
+  - name: "articles"
     collection: true
 development:
   frontend: https://wwww.traaidmark.com
   data: 
-    path: '../'
+    path: '../data'
     content: '/content'
     assets: '/public'
   server:
     port: 4000
-    cache: '../.cache'
+    cache: 
+     path: '../.cache'
+    log: 
+      path: '../.logs'
     

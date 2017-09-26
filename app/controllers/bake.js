@@ -5,31 +5,88 @@
 // 1. DEPENDENCIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const express = require('express')
-const ffs = require('final-fs')
+const fs = require('fs-extra')
+const meta = require('markdown-it-meta')
+const md = require('markdown-it')()
 
 const cfg = require('../config')
+const process = require('../util/contentProcess')
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // 2. SERVER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+md
+  .use(meta)
+
+
 const bake = async (req, res) => {
 
   // 2.1. DELETE & RECREATE CACHE DIR ..........................................
 
-  if ( await ffs.exists(cfg.server.cache) ) {
+  if ( await fs.pathExists(cfg.server.cache.path) ) {
   
-   await ffs.rmdir(cfg.server.cache)
-   await ffs.mkdirRecursive(cfg.server.cache)
+   await fs.remove(cfg.server.cache.path)
+   await fs.ensureDir(cfg.server.cache.path)
 
   } else {
-    await ffs.mkdirRecursive(cfg.server.cache)
+    await fs.ensureDir(cfg.server.cache.path)
   }
   
   // 2.1. END ..................................................................
 
+  // 2.2. RENDER CONTENT .......................................................
+
+  cfg.content_types.map( async type =>  {
+    
+    // 2.2.1. ADD DATA TO OBJECT
+    
+    type.content = cfg.data.path + cfg.data.content + '/' + type.name
+    type.assets = cfg.data.path + cfg.data.assets
+    
+    // 2.2.1. END 
+    
+    // 2.2.2. PREPARE CONTENT DIRECTORIES
+
+    await fs.ensureDir(`${cfg.server.cache.path}/${type.name}`)
+    
+    // 2.2.2. END 
+
+    // 2.2.2. PREPARE CONTENT DIRECTORIES
+
+    let contents = await fs.readdir(type.content)
+
+    contents.map( async file => {
+
+      let fileName = file.slice(0, -3)
+      
+      let path = type.content + '/' + file
+      let read = await fs.readFile(path, 'utf8')
+      let render = await md.render(read.toString())
+
+      await fs.writeJson(
+        `${cfg.server.cache.path}/${type.name}/${fileName}.json`,
+        {
+          document: render,
+          meta: md.meta
+        }
+      )
+
+    })
+    
+    // 2.2.2. END 
+
+  })
+
   // 2.2. END ..................................................................
-  // 2.2. END ..................................................................
+
+  // 2.3. OPTIMISE ASSETS ......................................................
+
+  // 2.3. END ..................................................................
+
+  // 2.4. WRITE TO LOG .........................................................
+
+  // 2.4. END ..................................................................
 
   return res.status(200).send({status: 'success', data: 'Created cache folder!'})
 

@@ -14,9 +14,12 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0",
-    "final-fs": "^1.6.1",
+    "fs-extra": "^4.0.2",
     "js-yaml": "^3.10.0",
     "lodash": "^4.17.4",
-    "nodemon": "*"
+    "markdown-it": "^8.4.0",
+    "markdown-it-meta": "^0.0.1",
+    "nodemon": "*",
+    "q": "^1.5.0"
   }
 }

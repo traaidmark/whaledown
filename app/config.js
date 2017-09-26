@@ -26,7 +26,7 @@ config.content_types = e.content_types
 
 // 2. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-if (env === 'development') { console.log(config)}
+//if (env === 'development') { console.log(config)}
 
 module.exports = config
 
