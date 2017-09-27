@@ -19,6 +19,7 @@
     "lodash": "^4.17.4",
     "markdown-it": "^8.4.0",
     "markdown-it-meta": "^0.0.1",
+    "moment": "^2.18.1",
     "nodemon": "*",
     "q": "^1.5.0"
   }

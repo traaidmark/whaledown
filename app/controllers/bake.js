@@ -8,7 +8,7 @@ const express = require('express')
 const fs = require('fs-extra')
 const meta = require('markdown-it-meta')
 const md = require('markdown-it')()
-const q = require('q')
+const moment = require('moment')
 
 const cfg = require('../config')
 const process = require('../util/contentProcess')
@@ -70,21 +70,17 @@ const bake = async (req, res) => {
       let read = await fs.readFile(path, 'utf8')
       let render = await md.render(read.toString())
 
+      if (render === '') {
+        render = false
+      }
+
       await fs.writeJson(
         `${cfg.server.cache.path}/${type.name}/${fileName}.json`,
         {
-          document: render,
-          meta: md.meta
+          body: render,
+          fields: md.meta
         }
       )
-
-      console.log(contentLength, i + 1)
-
-      if(type.collection) { 
-
-        listings.push(md.meta)
-
-      }
 
     })
     
