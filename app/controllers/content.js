@@ -1,0 +1,52 @@
+// APP: CONTROLLER: CONTENT ####################################################
+
+'use strict';
+
+// 1. DEPENDENCIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+const express = require('express')
+const fs = require('fs-extra')
+
+const cfg = require('../config')
+
+
+const cacheDir = cfg.server.cache.path
+
+// 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// 2. SERVER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+const content = async (req, res) => {
+
+  // 2.1. BASIC VALIDATION .....................................................
+
+  const type = cfg.content_types.filter( type => type.name === req.params.type)
+  
+  if (type.length === 0) {
+    return res.status(404).send({status: 'error', data: 'Content type not found.'})
+  } else {
+
+    const file = `${cacheDir}/${req.params.type}/${req.params.slug}.json`
+
+    let data
+
+    try {
+      data = await fs.readJson(file)
+      
+    } catch (error) {
+      return res.status(404).send({status: 'error', data: 'Resource not found.'})
+    }
+
+    return res.status(200).send({status: 'success', data})
+    
+  }
+  
+  // 2.1. END ..................................................................
+
+}
+
+// 2. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+module.exports = content
+
+// END OF FILE #################################################################

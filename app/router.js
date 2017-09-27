@@ -9,6 +9,7 @@ const express = require('express')
 const cfg = require('./config')
 
 const bakeController = require('./controllers/bake.js')
+const contentController = require('./controllers/content.js')
 const listController = require('./controllers/listings.js')
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -43,6 +44,10 @@ router.get( '/bake', (req, res) => bakeController(req, res))
 // 2.2. END ....................................................................
 
 // 2.3. CONTENT ................................................................
+
+router.get( '/content/:type/:slug', (req, res) => contentController(req, res))
+
+
 /*
 // 2.3.1. LISTINGS
 

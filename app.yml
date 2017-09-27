@@ -2,7 +2,8 @@ content_types:
   - name: "pages"
     collection: false
   - name: "articles"
-    collection: true
+    collection: 
+      items: 2
 development:
   frontend: https://wwww.traaidmark.com
   data: 

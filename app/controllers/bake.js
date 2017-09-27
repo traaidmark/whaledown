@@ -8,6 +8,7 @@ const express = require('express')
 const fs = require('fs-extra')
 const meta = require('markdown-it-meta')
 const md = require('markdown-it')()
+const q = require('q')
 
 const cfg = require('../config')
 const process = require('../util/contentProcess')
@@ -52,11 +53,16 @@ const bake = async (req, res) => {
     
     // 2.2.2. END 
 
-    // 2.2.2. PREPARE CONTENT DIRECTORIES
+    // 2.2.3. RENDER FILES
+
+    let listings = []
+
+    
 
     let contents = await fs.readdir(type.content)
+    let contentLength = contents.length;
 
-    contents.map( async file => {
+    contents.map( async (file, i) => {
 
       let fileName = file.slice(0, -3)
       
@@ -72,9 +78,17 @@ const bake = async (req, res) => {
         }
       )
 
+      console.log(contentLength, i + 1)
+
+      if(type.collection) { 
+
+        listings.push(md.meta)
+
+      }
+
     })
     
-    // 2.2.2. END 
+    // 2.2.3. END
 
   })
 
