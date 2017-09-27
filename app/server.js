@@ -18,13 +18,15 @@ const app = express()
 
 // 2.1. MIDDLEWARE .............................................................
 
-//app.use(morgan('combined'))
+// 2.1.1. SERVE STATIC CONTENT
+
+// 2.1.1. END
 
 // 2.1. END ....................................................................
 
 // 2.2. ROUTES .................................................................
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.redirect(cfg.server.app)
 })
 
