@@ -39,8 +39,6 @@ const content = async (req, res) => {
       return res.status(404).send({status: 'error', data: 'Resource not found.'})
     }
 
-    console.log(stat)
-
     return res.status(200).send({
       status: 'success', 
       created: moment(stat.birthtime).format('YYYY-MM-DD'),

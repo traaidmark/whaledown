@@ -10,7 +10,6 @@ const moment = require('moment')
 
 const cfg = require('../config')
 const renderContent = require('../util/renderContent')
-const renderListings = require('../util/renderListings')
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
