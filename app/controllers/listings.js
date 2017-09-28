@@ -25,26 +25,45 @@ const listings = async (req, res) => {
   
   if (type.length === 0) {
     return res.status(404).send({status: 'error', data: 'Content type not found.'})
-  } else {
-
-    const file = `${cacheDir}/${req.params.type}/listings/page-${req.params.number}.json`
-    let data, stat
-
-    try {
-      data = await fs.readJson(file)
-      stat = await fs.stat(file)
-      
-    } catch (error) {
-      return res.status(404).send({status: 'error', data: 'Resource not found.'})
-    }
-
-    return res.status(200).send({
-      status: 'success', 
-      created: moment(stat.birthtime).format('YYYY-MM-DD'),
-      data
-    })
-    
   }
+
+  if (type[0].collection === 'false') {
+    return res.status(500).send({status: 'error', data: 'Content type is not a collection.'})
+  }
+  const dir = `${cacheDir}/${req.params.type}/listings`
+  const file = `${dir}/page-${req.params.number}.json`
+  let data, stat, pages
+
+  try {
+    data = await fs.readJson(file)
+    pages = await fs.readdir(dir)
+    stat = await fs.stat(file)
+    
+  } catch (error) {
+    console.log(error)
+    return res.status(404).send({status: 'error', data: 'Resource not found.'})
+  }
+
+  let pageInfo = {
+    current: parseInt(req.params.number, 10),
+    total: pages.length,
+    next: parseInt(req.params.number, 10) + 1,
+    prev: parseInt(req.params.number, 10) - 1
+  }
+
+  if (pageInfo.current === pages.length) {
+    pageInfo.next = false
+  }
+  if (pageInfo.current === 1) {
+    pageInfo.prev = false
+  }
+
+  return res.status(200).send({
+    status: 'success', 
+    created: moment(stat.birthtime).format('YYYY-MM-DD'),
+    pages: pageInfo,
+    data: data.data
+  })
   
   // 2.1. END ..................................................................
 
