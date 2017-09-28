@@ -6,6 +6,7 @@
 
 const express = require('express')
 const fs = require('fs-extra')
+const moment = require('moment')
 
 const cfg = require('../config')
 
@@ -28,16 +29,23 @@ const content = async (req, res) => {
 
     const file = `${cacheDir}/${req.params.type}/${req.params.slug}.json`
 
-    let data
+    let data, stat
 
     try {
       data = await fs.readJson(file)
+      stat = await fs.stat(file)
       
     } catch (error) {
       return res.status(404).send({status: 'error', data: 'Resource not found.'})
     }
 
-    return res.status(200).send({status: 'success', data})
+    console.log(stat)
+
+    return res.status(200).send({
+      status: 'success', 
+      created: moment(stat.birthtime).format('YYYY-MM-DD'),
+      data
+    })
     
   }
   

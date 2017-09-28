@@ -6,20 +6,17 @@
 
 const express = require('express')
 const fs = require('fs-extra')
-const meta = require('markdown-it-meta')
-const md = require('markdown-it')()
 const moment = require('moment')
 
 const cfg = require('../config')
-const process = require('../util/contentProcess')
+const renderContent = require('../util/renderContent')
+const renderListings = require('../util/renderListings')
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // 2. SERVER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-md
-  .use(meta)
-
+let content, listings
 
 const bake = async (req, res) => {
 
@@ -38,67 +35,40 @@ const bake = async (req, res) => {
 
   // 2.2. RENDER CONTENT .......................................................
 
-  cfg.content_types.map( async type =>  {
-    
-    // 2.2.1. ADD DATA TO OBJECT
-    
-    type.content = cfg.data.path + cfg.data.content + '/' + type.name
-    type.assets = cfg.data.path + cfg.data.assets
-    
-    // 2.2.1. END 
-    
-    // 2.2.2. PREPARE CONTENT DIRECTORIES
 
-    await fs.ensureDir(`${cfg.server.cache.path}/${type.name}`)
-    
-    // 2.2.2. END 
+  try {
 
-    // 2.2.3. RENDER FILES
+    content = await renderContent()
 
-    let listings = []
+  } catch (error) {
 
-    
+    console.log(error)
 
-    let contents = await fs.readdir(type.content)
-    let contentLength = contents.length;
+    return res.status(500).send({status: 'error', data: 'It\'s not you, it\'s me. Sorry!'})
 
-    contents.map( async (file, i) => {
+  }
 
-      let fileName = file.slice(0, -3)
-      
-      let path = type.content + '/' + file
-      let read = await fs.readFile(path, 'utf8')
-      let render = await md.render(read.toString())
-
-      if (render === '') {
-        render = false
-      }
-
-      await fs.writeJson(
-        `${cfg.server.cache.path}/${type.name}/${fileName}.json`,
-        {
-          body: render,
-          fields: md.meta
-        }
-      )
-
-    })
-    
-    // 2.2.3. END
-
-  })
+  console.log(content)
 
   // 2.2. END ..................................................................
 
-  // 2.3. OPTIMISE ASSETS ......................................................
+  // 2.3. RENDER LISTINGS ......................................................
+
+  //console.log(await renderListings())
 
   // 2.3. END ..................................................................
 
-  // 2.4. WRITE TO LOG .........................................................
+  // 2.4. LOG ..................................................................
+
+  let log = {   
+    date: moment().format('YYYY-MM-DD'),
+    process_time: 'N/A',
+    content
+  }
 
   // 2.4. END ..................................................................
 
-  return res.status(200).send({status: 'success', data: 'Created cache folder!'})
+  return res.status(200).send({status: 'success', data: log})
 
 }
 
