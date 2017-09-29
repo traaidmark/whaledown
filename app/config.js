@@ -5,9 +5,14 @@
 // 1. DEPENDENCIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const yaml = require('js-yaml')
-const fs = require('fs')
+const fs = require('fs-extra')
 
-const e = yaml.load(fs.readFileSync('app.yml'))
+if (fs.pathExistsSync('./app.yml')) {
+  const e = yaml.load(fs.readFileSync('app-example.yml'))
+} else {
+  console.log('Error: You don\'t have an app.yml file. Please check the documentation!')
+  process.exit(1)
+}
 
 // 1. END ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
