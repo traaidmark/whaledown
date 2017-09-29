@@ -2,7 +2,6 @@
 
 title: 'This is article 1'
 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit'
-slug: 'about'
 date: '2017-09-26'
 share-img: false
 author: 'Adrian Kirsten'
