@@ -7,8 +7,10 @@
 const yaml = require('js-yaml')
 const fs = require('fs-extra')
 
+let e
+
 if (fs.pathExistsSync('./app.yml')) {
-  const e = yaml.load(fs.readFileSync('app-example.yml'))
+  e = yaml.load(fs.readFileSync('app.yml'))
 } else {
   console.log('Error: You don\'t have an app.yml file. Please check the documentation!')
   process.exit(1)
@@ -25,6 +27,7 @@ if (env === 'development') {
   config = e.development
 } else {
   console.log('No env set!')
+  process.exit(1)
 }
 
 config.content_types = e.content_types
